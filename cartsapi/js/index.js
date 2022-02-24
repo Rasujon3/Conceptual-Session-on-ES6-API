@@ -44,10 +44,33 @@ const cardsDisplay = (cards) => {
             <div class="card-body">
                 <h5 class="card-title">${card.suit}</h5>
                 <p class="card-text">${card.code}</p>
-                <button href="#" class="btn btn-primary">See Datails</button>
+                <button onclick="cartDetails('${card.code}')" href="#" class="btn btn-primary">See Datails</button>
             </div>
         </div>
     `;
     main.appendChild(div);
   }
+};
+
+const cartDetails = (code) => {
+  console.log(code);
+  fetch(`https://deckofcardsapi.com/api/deck/new/draw/?count=52`)
+    .then((res) => res.json())
+    .then((data) => {
+      const allCards = data.cards;
+      const singleCard = allCards.find((card) => card.code === code);
+      const div = document.createElement("div");
+      main.innerHTML = "";
+      div.innerHTML = `
+        <div class="card" style="width: 18rem;">
+                <img src="${singleCard.image}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Name: ${singleCard.suit}</h5>
+                    <p class="card-text">Code: ${singleCard.code}</p>
+                    <p class="card-text">Value: ${singleCard.value}</p>
+                </div>
+        </div>
+    `;
+      main.appendChild(div);
+    });
 };
